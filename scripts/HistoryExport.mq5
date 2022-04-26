@@ -1,10 +1,10 @@
 //+------------------------------------------------------------------+
 //|                                                HistoryExport.mq5 |
 //|                                Copyright 2021, Daniel Nettesheim |
-//|                                      https://www.nettesheim.name |
+//|             https://github.com/golesny/metatrader5-ea-collection |
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2021, Daniel Nettesheim"
-#property link      "https://www.nettesheim.name"
+#property link      "https://github.com/golesny/metatrader5-ea-collection"
 #property version   "1.00"
 
 #include <Generic/HashMap.mqh>
@@ -21,12 +21,12 @@ void OnStart()
 // get profit for all deals
 
    int total=HistoryDealsTotal();
-   CHashMap<int,ulong> mapPosID2DealOut;
+   CHashMap<long,ulong> mapPosID2DealOut;
    for(int i=0; i<total; i++)
      {
       ulong ticket= HistoryDealGetTicket(i);
       ENUM_DEAL_ENTRY ticketDealEntry = (ENUM_DEAL_ENTRY)HistoryDealGetInteger(ticket, DEAL_ENTRY);
-      int ticketPositionID = HistoryDealGetInteger(ticket, DEAL_POSITION_ID);
+      long ticketPositionID = HistoryDealGetInteger(ticket, DEAL_POSITION_ID);
       if(ticketDealEntry == DEAL_ENTRY_OUT)
         {
          mapPosID2DealOut.Add(ticketPositionID, ticket);
@@ -40,8 +40,8 @@ void OnStart()
    for(int i=0; i < ordersTotal; i++)
      {
       ulong orderTicket = HistoryOrderGetTicket(i);
-      ENUM_ORDER_TYPE orderType = HistoryOrderGetInteger(orderTicket, ORDER_TYPE);
-      int orderPositionID = HistoryOrderGetInteger(orderTicket, ORDER_POSITION_ID);
+      ENUM_ORDER_TYPE orderType = (ENUM_ORDER_TYPE)HistoryOrderGetInteger(orderTicket, ORDER_TYPE);
+      long orderPositionID = HistoryOrderGetInteger(orderTicket, ORDER_POSITION_ID);
       if(orderPositionID > 0 && (orderType == ORDER_TYPE_BUY || orderType == ORDER_TYPE_SELL_STOP))
         {
          string orderVol = DoubleToString(HistoryOrderGetDouble(orderTicket, ORDER_VOLUME_INITIAL),1);
@@ -50,7 +50,7 @@ void OnStart()
          //datetime orderTimeSetup = HistoryOrderGetInteger(orderTicket, ORDER_TIME_SETUP);
          //MqlDateTime orderTimeSetupDT;
          //TimeToStruct(orderTimeSetup, orderTimeSetupDT);
-         datetime orderTimeDone = HistoryOrderGetInteger(orderTicket, ORDER_TIME_DONE);
+         datetime orderTimeDone = (datetime)HistoryOrderGetInteger(orderTicket, ORDER_TIME_DONE);
          MqlDateTime orderTimeDoneDT;
          TimeToStruct(orderTimeDone, orderTimeDoneDT);
          //int irbToOrderLength = ((int)MathRound((orderTimeDone-orderTimeSetup) / PeriodSeconds()));
