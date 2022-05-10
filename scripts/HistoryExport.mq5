@@ -5,7 +5,7 @@
 //+------------------------------------------------------------------+
 #property copyright "Copyright 2021, Daniel Nettesheim"
 #property link      "https://github.com/golesny/metatrader5-ea-collection"
-#property version   "1.00"
+#property version   "1.01"
 
 #include <Generic/HashMap.mqh>
 //+------------------------------------------------------------------+
@@ -36,7 +36,7 @@ void OnStart()
 
 // print all orders
    int ordersTotal = HistoryOrdersTotal();
-   Print("symbol;orderTime;DoW;OrderType;Profit;Volume;Comment;EA-Magic");
+   Print("EA-Magic;symbol;orderTime;DoW;OrderType;Profit;Volume;Comment");
    for(int i=0; i < ordersTotal; i++)
      {
       ulong orderTicket = HistoryOrderGetTicket(i);
@@ -66,7 +66,7 @@ void OnStart()
             //orderTimeSetupDT.hour, SEP,
             //EnumToString((ENUM_DAY_OF_WEEK)orderTimeSetupDT.day_of_week),SEP,
             // Order
-            eaMagic
+            eaMagic,SEP
             ,symbol,SEP
             ,orderTimeDone,SEP,
             //orderTimeDoneDT.hour,SEP,
